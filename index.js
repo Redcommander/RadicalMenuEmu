@@ -146,14 +146,20 @@ io.on('connection', (socket) => {
     socket.emit('service_enabled')
 })
 
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
     console.log('Unable to handle request: ', req.method, req.path)
+    next()
 })
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 80
 const host = process.env.HOST ?? '127.0.0.1'
 
-server.listen(
-    port, 
-    host
-)
+server.listen(port, host, (err) => {
+    if (err) {
+        console.log('Failed to listen')
+        console.log(err)
+    }
+    else {
+        console.log(`Server started on http://${host}:${port}`)
+    }
+})
