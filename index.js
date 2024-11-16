@@ -10,6 +10,7 @@ const userId = "PlayerId"
 
 /////////////// code ///////////////
 
+require('dotenv').config()
 
 const express = require("express")
 const app = express()
@@ -32,6 +33,34 @@ app.get("/authenticate/service_status/", (req, res) => {
         success: true,
         response: {
             is_online: true
+        }
+    })
+})
+
+app.get('/authenticate/player/settings', (req, res) => {
+    console.log('/authenticate/player/settings')
+    console.log(req.body)
+    console.log(req.query)
+
+    res.json({
+        success: true,
+        response: {
+            
+        }
+    })
+})
+
+app.get('/stats/v1/get_player_stats/:id', (req, res) => {
+    console.log('get_player_stats')
+    console.log(req.body)
+    console.log(req.query)
+
+    res.json({
+        success: true,
+        response: {
+            player_stat: {
+
+            }
         }
     })
 })
@@ -117,4 +146,14 @@ io.on('connection', (socket) => {
     socket.emit('service_enabled')
 })
 
-server.listen(80)
+app.get('*', (req, res) => {
+    console.log('Unable to handle request: ', req.method, req.path)
+})
+
+const port = process.env.PORT ? parseInt(process.env.PORT) : 80
+const host = process.env.HOST ?? '127.0.0.1'
+
+server.listen(
+    port, 
+    host
+)
