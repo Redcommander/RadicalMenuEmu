@@ -19,12 +19,12 @@ const http = require("http")
 
 const server = http.createServer(app)
 
-const socketio = require("socket.io")
+const { Server } = require("socket.io");
 
-const io = socketio(server, {
+const io = new Server(server, {
     path: "/socket.io/",
     serveClient: false,
-    transports: ['websocket', 'polling']
+    transports: ['websocket']
 })
 
 // GET > /authenticate/service_status/
@@ -142,7 +142,7 @@ io.on('connection', (socket) => {
         socket.emit('lobby_found', matchmakingData)
     })
 
-    socket.emit('connect')
+    //socket.emit('connect')
     socket.emit('service_enabled')
 })
 
